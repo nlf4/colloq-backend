@@ -2,6 +2,6 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-abracadabra:
+login_test:
   path:     /api/login_check
   methods:  [POST]
