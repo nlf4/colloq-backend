@@ -20,10 +20,10 @@ class AuthController extends AbstractController
         $firstName = $reqdata->get('firstName');
         $lastName = $reqdata->get('lastName');
         $age = $reqdata->get('age');
-        $city = $reqdata->get('city');
+//        $city = $reqdata->get('city');
 //        $nativeLang = $reqdata->get('nativeLang');
 //        $targetLang = $reqdata->get('targetLang');
-        $meetupCity = $reqdata->get('meetupCity');
+//        $meetupCity = $reqdata->get('meetupCity');
         $meetupType = $reqdata->get('meetupType');
         $startDate = $reqdata->get('startDate');
         $endDate = $reqdata->get('endDate');
@@ -39,15 +39,17 @@ class AuthController extends AbstractController
             $isTutor = true;
         }
 
-
         $user = new User();
+        $encodedPassword = $encoder->encodePassword($user, $password);
+
+
         $user->setEmail($email)
-            ->setPassword($encoder->encodePassword($user, $password))
+            ->setPassword($encodedPassword)
             ->setFirstName($firstName)
             ->setLastName($lastName)
             ->setAge($age)
-            ->setCity($city)
-            ->setMeetupCity($meetupCity)
+//            ->setCity($city)
+//            ->setMeetupCity($meetupCity)
             ->setMeetupType($meetupType)
             ->setAvailStartDate($startDate)
             ->setAvailEndDate($endDate)

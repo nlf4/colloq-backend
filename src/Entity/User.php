@@ -92,6 +92,11 @@ class User implements UserInterface
      */
     private $publicMessage;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $plainPassword;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -109,9 +114,9 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
-        return $this->password;
+        return (string) $this->password;
     }
 
     public function setPassword(string $password): self
@@ -179,7 +184,8 @@ class User implements UserInterface
 
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
+        // If you store any temporary, sensitive data on the user, clear it here
+        $this->plainPassword = null;
     }
 
     public function setRoles(array $roles): self
@@ -189,12 +195,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getCity(): ?City
     {
         return $this->city;
     }
 
-    public function setCity(?city $city): self
+    public function setCity(?City $city): self
     {
         $this->city = $city;
 
@@ -281,6 +287,18 @@ class User implements UserInterface
     public function setPublicMessage(?string $publicMessage): self
     {
         $this->publicMessage = $publicMessage;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
