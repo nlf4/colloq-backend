@@ -15,19 +15,19 @@ class AuthController extends AbstractController
 
         //get request data
         $reqdata = json_decode($request->getContent(), false);
-        $email = $reqdata->get('email');
-        $password = $request->request->get('password');
-        $firstName = $reqdata->get('firstName');
-        $lastName = $reqdata->get('lastName');
-        $age = $reqdata->get('age');
+        $email = $reqdata->email;
+        $password = $reqdata->password;
+        $firstName = $reqdata->firstName;
+        $lastName = $reqdata->lastName;
+        $age = $reqdata->age;
 //        $city = $reqdata->get('city');
 //        $nativeLang = $reqdata->get('nativeLang');
 //        $targetLang = $reqdata->get('targetLang');
 //        $meetupCity = $reqdata->get('meetupCity');
-        $meetupType = $reqdata->get('meetupType');
-        $startDate = $reqdata->get('startDate');
-        $endDate = $reqdata->get('endDate');
-        $meetupRole = $reqdata->get('role');
+        $meetupType = $reqdata->meetupType;
+//        $startDate = $reqdata->startDate;
+//        $endDate = $reqdata->endDate;
+        $meetupRole = $reqdata->role;
 
 
         //set new user data
@@ -51,8 +51,8 @@ class AuthController extends AbstractController
 //            ->setCity($city)
 //            ->setMeetupCity($meetupCity)
             ->setMeetupType($meetupType)
-            ->setAvailStartDate($startDate)
-            ->setAvailEndDate($endDate)
+//            ->setAvailStartDate($startDate)
+//            ->setAvailEndDate($endDate)
             ->setIsTourist($isTourist)
             ->setIsTutor($isTutor);
 
