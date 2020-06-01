@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use \Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -11,17 +13,27 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get", "post"},
+ *     collectionOperations={"get"={
+ *      "normalization_context"={"groups"={"user:read", "user:item:get"}},
+ *     },
+ *     "post"},
  *     itemOperations={"get", "put", "delete"},
  *     normalizationContext={"groups"={"user:read"}, "swagger_definition_name"="Read"},
- *     denormalizationContext={"groups"={"user:write"}, "swagger_definition_name"="Write"}
+ *     denormalizationContext={"groups"={"user:write"}, "swagger_definition_name"="Write"},
+ *     attributes={
+ *     "pagination_items_per_page"=10
+ *     }
  * )
  * @ApiFilter(BooleanFilter::class, properties={"isTutor", "isTourist"})
  * @ApiFilter(SearchFilter::class, properties={"firstname": "partial"})
- *
+ * @ApiFilter(RangeFilter::class, properties={"age"})
+ * @UniqueEntity(fields={"email"})
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User implements UserInterface
@@ -35,25 +47,32 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read", "user:write"})
+     * @Groups({"user:read", "user:write", "city:read"})
+     * @Assert\NotBlank()
+     * @Assert\Email(
+     *     message = "The email entered is not a valid email."
+     * )
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read", "user:write"})
+     * @Groups({"user:write"})
+     * @Assert\NotBlank()
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user:read", "user:write"})
+     * @Assert\NotBlank()
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user:read", "user:write"})
+     * @Assert\NotBlank()
      */
     private $lastname;
 
@@ -86,18 +105,21 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="date", nullable=true)
      * @Groups({"user:read", "user:write"})
+     * @Assert\NotBlank()
      */
     private $availStartDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      * @Groups({"user:read", "user:write"})
+     * @Assert\NotBlank()
      */
     private $availEndDate;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      * @Groups({"user:read", "user:write"})
+     *
      */
     private $isTourist;
 
@@ -110,6 +132,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user:read", "user:write"})
+     * @Assert\NotBlank()
      */
     private $meetupType;
 
@@ -124,6 +147,40 @@ class User implements UserInterface
      *
      */
     private $plainPassword;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="messageAuthor", orphanRemoval=true)
+     */
+    private $writtenMessages;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="messageRecipient", orphanRemoval=true)
+     */
+    private $receivedMessages;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="commentAuthor", orphanRemoval=true)
+     */
+    private $writtenComments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="commentRecipient", orphanRemoval=true)
+     */
+    private $receivedComments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $images;
+
+    public function __construct()
+    {
+        $this->writtenMessages = new ArrayCollection();
+        $this->receivedMessages = new ArrayCollection();
+        $this->writtenComments = new ArrayCollection();
+        $this->receivedComments = new ArrayCollection();
+        $this->images = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -327,6 +384,161 @@ class User implements UserInterface
     public function setPlainPassword(string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getWrittenMessages(): Collection
+    {
+        return $this->writtenMessages;
+    }
+
+    public function addWrittenMessage(Message $writtenMessage): self
+    {
+        if (!$this->writtenMessages->contains($writtenMessage)) {
+            $this->writtenMessages[] = $writtenMessage;
+            $writtenMessage->setMessageAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWrittenMessage(Message $writtenMessage): self
+    {
+        if ($this->writtenMessages->contains($writtenMessage)) {
+            $this->writtenMessages->removeElement($writtenMessage);
+            // set the owning side to null (unless already changed)
+            if ($writtenMessage->getMessageAuthor() === $this) {
+                $writtenMessage->setMessageAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getReceivedMessages(): Collection
+    {
+        return $this->receivedMessages;
+    }
+
+    public function addReceivedMessage(Message $receivedMessage): self
+    {
+        if (!$this->receivedMessages->contains($receivedMessage)) {
+            $this->receivedMessages[] = $receivedMessage;
+            $receivedMessage->setMessageRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedMessage(Message $receivedMessage): self
+    {
+        if ($this->receivedMessages->contains($receivedMessage)) {
+            $this->receivedMessages->removeElement($receivedMessage);
+            // set the owning side to null (unless already changed)
+            if ($receivedMessage->getMessageRecipient() === $this) {
+                $receivedMessage->setMessageRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getWrittenComments(): Collection
+    {
+        return $this->writtenComments;
+    }
+
+    public function addWrittenComment(Comment $writtenComment): self
+    {
+        if (!$this->writtenComments->contains($writtenComment)) {
+            $this->writtenComments[] = $writtenComment;
+            $writtenComment->setCommentAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWrittenComment(Comment $writtenComment): self
+    {
+        if ($this->writtenComments->contains($writtenComment)) {
+            $this->writtenComments->removeElement($writtenComment);
+            // set the owning side to null (unless already changed)
+            if ($writtenComment->getCommentAuthor() === $this) {
+                $writtenComment->setCommentAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getReceivedComments(): Collection
+    {
+        return $this->receivedComments;
+    }
+
+    public function addReceivedComment(Comment $receivedComment): self
+    {
+        if (!$this->receivedComments->contains($receivedComment)) {
+            $this->receivedComments[] = $receivedComment;
+            $receivedComment->setCommentRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedComment(Comment $receivedComment): self
+    {
+        if ($this->receivedComments->contains($receivedComment)) {
+            $this->receivedComments->removeElement($receivedComment);
+            // set the owning side to null (unless already changed)
+            if ($receivedComment->getCommentRecipient() === $this) {
+                $receivedComment->setCommentRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        if ($this->images->contains($image)) {
+            $this->images->removeElement($image);
+            // set the owning side to null (unless already changed)
+            if ($image->getUser() === $this) {
+                $image->setUser(null);
+            }
+        }
 
         return $this;
     }

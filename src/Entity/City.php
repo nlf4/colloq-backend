@@ -29,7 +29,7 @@ class City
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"city:read"})
+     * @Groups({"city:read", "user:item:get", "user:write"})
      */
     private $name;
 
