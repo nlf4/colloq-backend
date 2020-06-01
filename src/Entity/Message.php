@@ -42,28 +42,35 @@ class Message
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"message:read", "message:write"})
+     * @Assert\NotBlank()
      */
     private $subject;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"message:read", "message:write"})
+     * @Assert\NotBlank()
      */
     private $text;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"message:read"})
      */
     private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"message:read"})
      */
     private $messageAuthor;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="receivedMessages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"message:read"})
      */
     private $messageRecipient;
 
