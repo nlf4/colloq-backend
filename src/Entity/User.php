@@ -6,11 +6,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use \Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ApiResource(
  *     collectionOperations={"get", "post"},
- *      itemOperations={"get", "put", "delete"}
+ *      itemOperations={"get", "put", "delete"},
+ *     normalizationContext={"groups"={"user:read"}, "swagger_definition_name"="Read"},
+ *     denormalizationContext={"groups"={"user:write"}, "swagger_definition_name"="Write"}
  * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
@@ -25,78 +29,93 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read", "user:write"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read", "user:write"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $age;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @Groups({"user:read"})
      */
     private $roles = array();
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $city;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $meetupCity;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $availStartDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $availEndDate;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $isTourist;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $isTutor;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $meetupType;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $publicMessage;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *
      */
     private $plainPassword;
 

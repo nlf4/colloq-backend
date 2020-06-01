@@ -7,9 +7,15 @@ use App\Repository\CityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *      itemOperations={"get"},
+ *     normalizationContext={"groups"={"city:read"}, "swagger_definition_name"="Read"},
+ *     denormalizationContext={"groups"={"city:write"}, "swagger_definition_name"="Write"}
+ * )
  * @ORM\Entity(repositoryClass=CityRepository::class)
  */
 class City
@@ -23,17 +29,20 @@ class City
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"city:read"})
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="cities")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"city:read"})
      */
     private $country;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="meetupCity")
+     * @Groups({"city:read"})
      */
     private $users;
 
