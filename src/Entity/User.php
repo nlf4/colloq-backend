@@ -173,6 +173,11 @@ class User implements UserInterface
      */
     private $images;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Meetup::class, inversedBy="users")
+     */
+    private $meetups;
+
     public function __construct()
     {
         $this->writtenMessages = new ArrayCollection();
@@ -180,6 +185,7 @@ class User implements UserInterface
         $this->writtenComments = new ArrayCollection();
         $this->receivedComments = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->meetups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -538,6 +544,32 @@ class User implements UserInterface
             if ($image->getUser() === $this) {
                 $image->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Meetup[]
+     */
+    public function getMeetups(): Collection
+    {
+        return $this->meetups;
+    }
+
+    public function addMeetup(Meetup $meetup): self
+    {
+        if (!$this->meetups->contains($meetup)) {
+            $this->meetups[] = $meetup;
+        }
+
+        return $this;
+    }
+
+    public function removeMeetup(Meetup $meetup): self
+    {
+        if ($this->meetups->contains($meetup)) {
+            $this->meetups->removeElement($meetup);
         }
 
         return $this;

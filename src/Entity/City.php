@@ -46,9 +46,15 @@ class City
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Meetup::class, mappedBy="city")
+     */
+    private $meetups;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->meetups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,6 +111,37 @@ class City
             // set the owning side to null (unless already changed)
             if ($user->getMeetupCity() === $this) {
                 $user->setMeetupCity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Meetup[]
+     */
+    public function getMeetups(): Collection
+    {
+        return $this->meetups;
+    }
+
+    public function addMeetup(Meetup $meetup): self
+    {
+        if (!$this->meetups->contains($meetup)) {
+            $this->meetups[] = $meetup;
+            $meetup->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeetup(Meetup $meetup): self
+    {
+        if ($this->meetups->contains($meetup)) {
+            $this->meetups->removeElement($meetup);
+            // set the owning side to null (unless already changed)
+            if ($meetup->getCity() === $this) {
+                $meetup->setCity(null);
             }
         }
 

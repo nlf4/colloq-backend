@@ -5,9 +5,30 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={"get", "post"},
+ *     itemOperations={"get"={
+ *      "normalization_context"={"groups"={"message:read", "message:item:get"}},
+ *     },
+ *      "put", "delete"},
+ *     normalizationContext={"groups"={"message:read"}, "swagger_definition_name"="Read"},
+ *     denormalizationContext={"groups"={"message:write"}, "swagger_definition_name"="Write"},
+ *     attributes={
+ *     "pagination_items_per_page"=10
+ *     }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"subject": "partial", "messageAuthor": "partial", "messageRecipient": "partial"})
  * @ORM\Entity(repositoryClass=MessageRepository::class)
  */
 class Message
