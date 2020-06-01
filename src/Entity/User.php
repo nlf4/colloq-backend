@@ -8,14 +8,20 @@ use Doctrine\ORM\Mapping as ORM;
 use \Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
  *     collectionOperations={"get", "post"},
- *      itemOperations={"get", "put", "delete"},
+ *     itemOperations={"get", "put", "delete"},
  *     normalizationContext={"groups"={"user:read"}, "swagger_definition_name"="Read"},
  *     denormalizationContext={"groups"={"user:write"}, "swagger_definition_name"="Write"}
  * )
+ * @ApiFilter(BooleanFilter::class, properties={"isTutor", "isTourist"})
+ * @ApiFilter(SearchFilter::class, properties={"firstname": "partial"})
+ *
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User implements UserInterface
