@@ -1,0 +1,91 @@
+#easy_admin:
+#    entities:
+##        # List the entity class name you want to manage
+#        - App\Entity\City
+#        - App\Entity\Comment
+#        - App\Entity\Country
+#        - App\Entity\Image
+#        - App\Entity\Meetup
+#        - App\Entity\Message
+#        - App\Entity\User
+easy_admin:
+    entities:
+        User:
+            class: App\Entity\User
+            help: 'Global message displayed in all views'
+            label: 'Users'
+            list:
+                fields: ['id', 'email', 'firstName', 'lastName', 'age', 'city.name', 'availStartDate', 'availEndDate', 'isTourist', 'isTutor', 'meetupType']
+
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            show:
+            search:
+
+
+        City:
+            class: App\Entity\City
+            label: 'Cities'
+            list:
+                fields:
+                    ['id', 'name', 'country.name', 'users', 'meetups']
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+        Comment:
+            class: App\Entity\Comment
+            label: 'Comments'
+            list:
+                fields:
+                  ['id', 'text', 'commentAuthor', 'commentRecipient', 'createdAt']
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+        Country:
+            class: App\Entity\Country
+            label: 'Countries'
+            list:
+                fields:
+                  ['id', 'name', 'cities']
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+        Image:
+            class: App\Entity\Image
+            label: 'Images'
+            list:
+                fields:
+                  ['id', 'filename', 'title', 'caption', 'createdAt', 'user.email']
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+        Meetup:
+            class: App\Entity\Meetup
+            label: 'Meetups'
+            list:
+                fields:
+                  ['id', 'name', 'date', 'startTime', 'endTime', 'type', 'description', 'city', 'users']
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+        Message:
+            class: App\Entity\Message
+            label: 'Messages'
+
+            list:
+                fields:
+                  ['id', 'subject', 'text', 'messageAuthor', 'messageRecipient', 'createdAt']
+                title: ""
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+
+
+    site_name: 'Colloq'
+    design:
+        brand_color: '#ff7043'
+        assets:
+            css:
+                # ...
+                - 'css/admin.css'
