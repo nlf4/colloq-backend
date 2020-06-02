@@ -2,27 +2,40 @@
 
 * {
     box-sizing: border-box;
-    box-shadow: inherit !important;
 }
 
 body {
     font-family: 'Raleway', sans-serif;
 }
 
-.logo {
+a.logo {
     font-size: 40px;
+    color: #eeeeee;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #ff7043;
+    padding: 20px;
+    margin-bottom: 0;
+    color: white;
 }
 
 .main-sidebar {
+    margin-top: 0;
     background-color: #ff7043;
     padding: 0 20px;
 
 }
 
 .sidebar-menu a {
+    font-size: 1.3rem;
+}
+.sidebar-menu a {
     font-family: 'Raleway', sans-serif;
     color: #eeeeee;
-    font-size: 20px;
+    font-size: 1.2rem;
     margin-top: 12px;
     padding-bottom: 4px;
 
@@ -33,3 +46,17 @@ body {
     padding-bottom: 2px;
 
 }
+
+.sidebar-menu li {
+    list-style: none;
+    font-size: 1.5rem;
+}
+
+.sidebar-menu li:not(.submenu-active).active .fa, .sidebar-menu li:not(.submenu-active).active a {
+    color: #eeeeee;
+    filter: opacity(100%);
+    font-weight: 600;
+}
+
+
+

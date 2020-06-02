@@ -9,6 +9,8 @@
 #        - App\Entity\Message
 #        - App\Entity\User
 easy_admin:
+    list:
+        batch_actions: [{ name: 'delete', ask_confirm: true }]
     entities:
         Tourists:
             class: App\Entity\User
@@ -227,3 +229,5 @@ easy_admin:
             - label: 'Events'
               icon: 'comments'
               children: ['Meetup']
+            - { label: 'Api', url: '/swagger-api', icon: 'table' }
+            - { label: 'Colloq App', url: 'http://localhost:3000', icon: 'asterisk'}
