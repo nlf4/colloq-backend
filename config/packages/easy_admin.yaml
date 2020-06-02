@@ -10,9 +10,89 @@
 #        - App\Entity\User
 easy_admin:
     entities:
+        Tourists:
+            class: App\Entity\User
+            list:
+                fields:
+                    - id
+                    - { property: 'email', type: 'email' }
+                    - firstName
+                    - lastName
+                    - age
+                    - city.name
+                    - availStartDate
+                    - availEndDate
+                    - isTourist
+                    - isTutor
+                    - meetupType
+                dql_filter: 'entity.isTourist = true'
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            form:
+                title: 'Add a Tourist'
+                fields:
+                    - id
+                    - { type: 'section', label: 'User Details' }
+                    - email
+                    - firstName
+                    - lastName
+                    - age
+                    - city
+                    - { type: 'section', label: 'Meetup Details' }
+                    - availStartDate
+                    - availEndDate
+                    - isTourist
+                    - isTutor
+                    - meetupType
+                new:
+                    -'-id'
+
+                edit:
+                    title:  'Edit a Tourist'
+        Locals:
+            class: App\Entity\User
+            list:
+                dql_filter: 'entity.isTutor = true'
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+                fields:
+                    - id
+                    - { property: 'email', type: 'email' }
+                    - firstName
+                    - lastName
+                    - age
+                    - city.name
+                    - availStartDate
+                    - availEndDate
+                    - isTourist
+                    - isTutor
+                    - meetupType
+            form:
+                title: 'Add a Local'
+                fields:
+                    - id
+                    - { type: 'section', label: 'User Details' }
+                    - email
+                    - firstName
+                    - lastName
+                    - age
+                    - city
+                    - { type: 'section', label: 'Meetup Details' }
+                    - availStartDate
+                    - availEndDate
+                    - isTourist
+                    - isTutor
+                    - meetupType
+                new:
+                    -'-id'
+
+                edit:
+                    title:  'Edit a Local'
         User:
             class: App\Entity\User
-            help: 'Global message displayed in all views'
+            help: ''
             label: 'Users'
             list:
                 fields: ['id', 'email', 'firstName', 'lastName', 'age', 'city.name', 'availStartDate', 'availEndDate', 'isTourist', 'isTutor', 'meetupType']
@@ -33,7 +113,20 @@ easy_admin:
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            form:
+                title: 'Add a City'
+                fields:
+                    - name
+                    - country
+
+                new:
+
+                edit:
+                    title:  'Edit a City'
+
+
         Comment:
+            disabled_actions: ['new']
             class: App\Entity\Comment
             label: 'Comments'
             list:
@@ -42,6 +135,9 @@ easy_admin:
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+
+
+
         Country:
             class: App\Entity\Country
             label: 'Countries'
@@ -51,16 +147,36 @@ easy_admin:
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            form:
+                title: 'Add a Country'
+                fields:
+                    - name
+                new:
+                edit:
+                    title:  'Edit a Country'
+
+
         Image:
+            disabled_actions: ['new']
             class: App\Entity\Image
             label: 'Images'
             list:
                 fields:
-                  ['id', 'filename', 'title', 'caption', 'createdAt', 'user.email']
+                  ['id', 'filename', 'title', 'caption', 'createdAt', 'user.fullname']
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            form:
+                title: 'Add an Image'
+
+                new:
+
+                edit:
+                    title:  'Edit an Image'
+
+
         Meetup:
+            disabled_actions: ['new']
             class: App\Entity\Meetup
             label: 'Meetups'
             list:
@@ -69,7 +185,16 @@ easy_admin:
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            form:
+                title: 'Add a Meetup'
+
+                new:
+
+                edit:
+                    title:  'Edit a Meetup'
+
         Message:
+            disabled_actions: ['new']
             class: App\Entity\Message
             label: 'Messages'
 
@@ -89,3 +214,16 @@ easy_admin:
             css:
                 # ...
                 - 'css/admin.css'
+        menu:
+            - label: "Users"
+              icon: 'user'
+              children: ['Tourists', 'Locals']
+            - label: "User Profile"
+              icon: 'address-card'
+              children: ['Comment', 'Message', 'Image']
+            - label: 'Location'
+              icon: 'globe-americas'
+              children: ['City', 'Country']
+            - label: 'Events'
+              icon: 'comments'
+              children: ['Meetup']

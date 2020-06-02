@@ -188,6 +188,12 @@ class User implements UserInterface
         $this->meetups = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+
+        return (string)$this->getEmail();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -239,6 +245,11 @@ class User implements UserInterface
         $this->lastname = $lastname;
 
         return $this;
+    }
+
+    public function getFullName()
+    {
+        return $this->getFirstName().' '.$this->getLastName();
     }
 
     public function getAge(): ?int
