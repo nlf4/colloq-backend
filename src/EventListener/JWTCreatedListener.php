@@ -72,8 +72,6 @@ class JWTCreatedListener
         $payload['images'] = $user->getImages();
 
 
-
-
         $event->setData($payload);
     }
 
