@@ -11,6 +11,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ApiResource(
@@ -28,6 +30,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ApiFilter(SearchFilter::class, properties={"filename": "partial", "title": "partial", "user": "partial"})
  * @ApiFilter(DateFilter::class, properties={"createdAt"})
  * @ORM\Entity(repositoryClass=ImageRepository::class)
+ * @Vich\Uploadable
  */
 class Image
 {
@@ -59,6 +62,7 @@ class Image
 
     /**
      * @ORM\Column(type="datetime")
+     * @var \DateTime
      * @Groups({"image:read"})
      */
     private $createdAt;
@@ -69,6 +73,18 @@ class Image
      * @Groups({"image:read"})
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $image;
+
+    /**
+     * @Vich\UploadableField(mapping="profile_photos", fileNameProperty="image")
+     * @var File
+     */
+    private $imageFile;
 
     public function getId(): ?int
     {
@@ -133,5 +149,35 @@ class Image
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->createdAt = new \DateTime('now');
+        }
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
     }
 }

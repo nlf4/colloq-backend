@@ -21,12 +21,13 @@ easy_admin:
                     - firstName
                     - lastName
                     - age
-                    - city.name
+                    - {property: 'city.name', label: 'City'}
                     - availStartDate
                     - availEndDate
                     - isTourist
                     - isTutor
                     - meetupType
+                    - publicMessage
                 dql_filter: 'entity.isTourist = true'
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
@@ -47,6 +48,7 @@ easy_admin:
                     - isTourist
                     - isTutor
                     - meetupType
+                    - publicMessage
                 new:
                     -'-id'
 
@@ -159,22 +161,53 @@ easy_admin:
 
 
         Image:
-            disabled_actions: ['new']
+
             class: App\Entity\Image
             label: 'Images'
             list:
                 fields:
-                  ['id', 'filename', 'title', 'caption', 'createdAt', 'user.fullname']
+                    - id
+                    - user.fullname
+                    - user.email
+                    - filename
+                    - title
+                    - caption
+                    - createdAt
+                    - { property: 'image', type: 'image', base_path: '%uploads_path%' }
+
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
             form:
                 title: 'Add an Image'
+                form:
+                    fields:
+                        - user.email
+                        - filename
+                        - title
+                        - caption
+                        - createdAt
+                        - {property: 'imageFile', type: 'vich_image', label: 'Profile photo'}
 
                 new:
+                    fields:
+                        - user.id
+                        - filename
+                        - title
+                        - caption
+                        - createdAt
+                        - {property: 'imageFile', type: 'vich_image', label: 'Profile photo'}
+
 
                 edit:
                     title:  'Edit an Image'
+                    fields:
+                        - user.id
+                        - filename
+                        - title
+                        - caption
+                        - createdAt
+                        - {property: 'imageFile', type: 'vich_image', label: 'Profile photo'}
 
 
         Meetup:
@@ -229,5 +262,5 @@ easy_admin:
             - label: 'Events'
               icon: 'comments'
               children: ['Meetup']
-            - { label: 'Api', url: '/swagger-api', icon: 'table' }
+            - { label: 'Api', url: '/api', icon: 'table' }
             - { label: 'Colloq App', url: 'http://localhost:3000', icon: 'asterisk'}
