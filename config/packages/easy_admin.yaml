@@ -262,5 +262,5 @@ easy_admin:
             - label: 'Events'
               icon: 'comments'
               children: ['Meetup']
-            - { label: 'Api', url: '/api', icon: 'table' }
+            - { label: 'Api', url: '/swagger-api', icon: 'table' }
             - { label: 'Colloq App', url: 'http://localhost:3000', icon: 'asterisk'}
