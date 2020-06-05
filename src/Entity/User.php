@@ -89,14 +89,14 @@ class User implements UserInterface
     private $roles = array();
 
     /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="localUsers")
      * @ORM\JoinColumn(nullable=true)
      * @Groups({"user:read", "user:write"})
      */
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="touristUsers")
      * @ORM\JoinColumn(nullable=true)
      * @Groups({"user:read", "user:write"})
      */
