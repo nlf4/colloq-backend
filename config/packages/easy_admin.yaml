@@ -73,6 +73,7 @@ easy_admin:
                     - isTourist
                     - isTutor
                     - meetupType
+                    - publicMessage
             form:
                 title: 'Add a Local'
                 fields:
@@ -89,6 +90,7 @@ easy_admin:
                     - isTourist
                     - isTutor
                     - meetupType
+                    - publicMessage
                 new:
                     -'-id'
 
