@@ -1,13 +1,3 @@
-#easy_admin:
-#    entities:
-##        # List the entity class name you want to manage
-#        - App\Entity\City
-#        - App\Entity\Comment
-#        - App\Entity\Country
-#        - App\Entity\Image
-#        - App\Entity\Meetup
-#        - App\Entity\Message
-#        - App\Entity\User
 easy_admin:
     list:
         batch_actions: [{ name: 'delete', ask_confirm: true }]
@@ -32,6 +22,7 @@ easy_admin:
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+                    - {name: 'show', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
             form:
                 title: 'Add a Tourist'
                 fields:
@@ -54,6 +45,21 @@ easy_admin:
 
                 edit:
                     title:  'Edit a Tourist'
+            show:
+                fields:
+                    - id
+                    - { property: 'email', type: 'email' }
+                    - firstName
+                    - lastName
+                    - age
+                    - {property: 'city.name', label: 'City'}
+                    - availStartDate
+                    - availEndDate
+                    - isTourist
+                    - isTutor
+                    - meetupType
+                    - publicMessage
+
         Locals:
             class: App\Entity\User
             list:
@@ -242,6 +248,18 @@ easy_admin:
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+        Language:
+            disabled_actions: ['new']
+            class: App\Entity\Language
+            label: 'Languages'
+
+            list:
+                fields:
+                  ['id', 'name']
+                title: ""
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
 
 
     site_name: 'Colloq'
@@ -257,7 +275,7 @@ easy_admin:
               children: ['Tourists', 'Locals']
             - label: "User Profile"
               icon: 'address-card'
-              children: ['Comment', 'Message', 'Image']
+              children: ['Comment', 'Message', 'Image', 'Language']
             - label: 'Location'
               icon: 'globe-americas'
               children: ['City', 'Country']
