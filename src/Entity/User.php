@@ -32,7 +32,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @ApiFilter(BooleanFilter::class, properties={"isTutor", "isTourist"})
  * @ApiFilter(SearchFilter::class, properties={"firstname": "partial"})
+// * @ApiFilter(SearchFilter::class, properties={"city": "exact"})
  * @ApiFilter(RangeFilter::class, properties={"age"})
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "city.name": "exact"
+ * })
  * @UniqueEntity(fields={"email"})
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */

@@ -33,7 +33,6 @@ easy_admin:
                     - email
                     - {property: 'firstName', type: 'text'}
                     - {property: 'lastName', type: 'text'}
-                    - {property: 'password', type: 'password'}
                     - age
                     - city
                     - { type: 'section', label: 'Meetup Details' }
@@ -86,12 +85,10 @@ easy_admin:
             form:
                 title: 'Add a Local'
                 fields:
-                    - id
                     - { type: 'section', label: 'User Details' }
                     - email
                     - {property: 'firstName', type: 'text'}
                     - {property: 'lastName', type: 'text'}
-                    - {property: 'password', type: 'password'}
                     - age
                     - city
                     - { type: 'section', label: 'Meetup Details' }
