@@ -1,6 +1,8 @@
 easy_admin:
     list:
         batch_actions: [{ name: 'delete', ask_confirm: true }]
+    user:
+        name_property_path: 'firstname'
     entities:
         Tourists:
             class: App\Entity\User
@@ -14,27 +16,28 @@ easy_admin:
                     - {property: 'city.name', label: 'City'}
                     - availStartDate
                     - availEndDate
-                    - isTourist
-                    - isTutor
+                    - {property: 'isTourist', label: 'Tourist'}
+                    - {property: 'isTutor', label: 'Local'}
                     - meetupType
-                    - publicMessage
+
                 dql_filter: 'entity.isTourist = true'
                 actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'show', icon: 'search-plus', label: false, css_class: 'btn btn-info'}
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-success'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
-                    - {name: 'show', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+
             form:
                 title: 'Add a Tourist'
                 fields:
-                    - id
                     - { type: 'section', label: 'User Details' }
                     - email
-                    - firstName
-                    - lastName
+                    - {property: 'firstName', type: 'text'}
+                    - {property: 'lastName', type: 'text'}
+                    - {property: 'password', type: 'password'}
                     - age
                     - city
                     - { type: 'section', label: 'Meetup Details' }
-                    - availStartDate
+                    - {property: 'availStartDate', label: 'Available Start Date'}
                     - availEndDate
                     - isTourist
                     - isTutor
@@ -53,8 +56,8 @@ easy_admin:
                     - lastName
                     - age
                     - {property: 'city.name', label: 'City'}
-                    - availStartDate
-                    - availEndDate
+                    - {property: 'availStartDate', label: 'Available Start Date'}
+                    - {property: 'availEndDate', label: 'Available End Date'}
                     - isTourist
                     - isTutor
                     - meetupType
@@ -65,7 +68,8 @@ easy_admin:
             list:
                 dql_filter: 'entity.isTutor = true'
                 actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'show', icon: 'search-plus', label: false, css_class: 'btn btn-info'}
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-success'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
                 fields:
                     - id
@@ -73,28 +77,28 @@ easy_admin:
                     - firstName
                     - lastName
                     - age
-                    - city.name
+                    - {property: 'city.name', label: 'City'}
                     - availStartDate
                     - availEndDate
-                    - isTourist
-                    - isTutor
+                    - {property: 'isTourist', label: 'Tourist'}
+                    - {property: 'isTutor', label: 'Local'}
                     - meetupType
-                    - publicMessage
             form:
                 title: 'Add a Local'
                 fields:
                     - id
                     - { type: 'section', label: 'User Details' }
                     - email
-                    - firstName
-                    - lastName
+                    - {property: 'firstName', type: 'text'}
+                    - {property: 'lastName', type: 'text'}
+                    - {property: 'password', type: 'password'}
                     - age
                     - city
                     - { type: 'section', label: 'Meetup Details' }
                     - availStartDate
                     - availEndDate
-                    - isTourist
-                    - isTutor
+                    - {property: 'isTourist', label: 'Tourist'}
+                    - {property: 'isTutor', label: 'Local'}
                     - meetupType
                     - publicMessage
                 new:
@@ -102,6 +106,20 @@ easy_admin:
 
                 edit:
                     title:  'Edit a Local'
+            show:
+                fields:
+                    - id
+                    - { property: 'email', type: 'email' }
+                    - firstName
+                    - lastName
+                    - age
+                    - {property: 'city.name', label: 'City'}
+                    - {property: 'availStartDate', label: 'Available Start Date'}
+                    - {property: 'availEndDate', label: 'Available End Date'}
+                    - {property: 'isTourist', label: 'Tourist'}
+                    - {property: 'isTutor', label: 'Local'}
+                    - meetupType
+                    - publicMessage
         User:
             class: App\Entity\User
             help: ''
@@ -175,8 +193,8 @@ easy_admin:
             list:
                 fields:
                     - id
-                    - user.fullname
-                    - user.email
+                    - {property: 'user.fullname', label: 'User'}
+                    - {property: 'user.email', label: 'User Email'}
                     - filename
                     - title
                     - caption
@@ -184,7 +202,8 @@ easy_admin:
                     - { property: 'image', type: 'image', base_path: '%uploads_path%' }
 
                 actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'show', icon: 'search-plus', label: false, css_class: 'btn btn-info'}
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-success'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
             form:
                 title: 'Add an Image'
