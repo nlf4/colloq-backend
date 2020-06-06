@@ -32,7 +32,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @ApiFilter(BooleanFilter::class, properties={"isTutor", "isTourist"})
  * @ApiFilter(SearchFilter::class, properties={"firstname": "partial"})
+// * @ApiFilter(SearchFilter::class, properties={"city": "exact"})
  * @ApiFilter(RangeFilter::class, properties={"age"})
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "city.name": "exact"
+ * })
  * @UniqueEntity(fields={"email"})
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
@@ -89,14 +93,14 @@ class User implements UserInterface
     private $roles = array();
 
     /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="localUsers")
      * @ORM\JoinColumn(nullable=true)
      * @Groups({"user:read", "user:write"})
      */
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="touristUsers")
      * @ORM\JoinColumn(nullable=true)
      * @Groups({"user:read", "user:write"})
      */
@@ -178,6 +182,11 @@ class User implements UserInterface
      */
     private $meetups;
 
+    /**
+     * @ORM\OneToMany(targetEntity=UserLanguages::class, mappedBy="user")
+     */
+    private $userLanguages;
+
     public function __construct()
     {
         $this->writtenMessages = new ArrayCollection();
@@ -186,6 +195,7 @@ class User implements UserInterface
         $this->receivedComments = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->meetups = new ArrayCollection();
+        $this->userLanguages = new ArrayCollection();
     }
 
     public function __toString()
@@ -581,6 +591,37 @@ class User implements UserInterface
     {
         if ($this->meetups->contains($meetup)) {
             $this->meetups->removeElement($meetup);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserLanguages[]
+     */
+    public function getUserLanguages(): Collection
+    {
+        return $this->userLanguages;
+    }
+
+    public function addUserLanguage(UserLanguages $userLanguage): self
+    {
+        if (!$this->userLanguages->contains($userLanguage)) {
+            $this->userLanguages[] = $userLanguage;
+            $userLanguage->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserLanguage(UserLanguages $userLanguage): self
+    {
+        if ($this->userLanguages->contains($userLanguage)) {
+            $this->userLanguages->removeElement($userLanguage);
+            // set the owning side to null (unless already changed)
+            if ($userLanguage->getUser() === $this) {
+                $userLanguage->setUser(null);
+            }
         }
 
         return $this;

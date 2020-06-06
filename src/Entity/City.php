@@ -29,7 +29,7 @@ class City
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"city:read", "user:item:get", "user:write"})
+     * @Groups({"city:read", "user:item:get", "user:read", "user:write"})
      */
     private $name;
 
@@ -41,10 +41,16 @@ class City
     private $country;
 
     /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="city")
+     * @Groups({"city:read"})
+     */
+    private $localUsers;
+
+    /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="meetupCity")
      * @Groups({"city:read"})
      */
-    private $users;
+    private $touristUsers;
 
     /**
      * @ORM\OneToMany(targetEntity=Meetup::class, mappedBy="city")
@@ -53,7 +59,8 @@ class City
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->localUsers = new ArrayCollection();
+        $this->touristUsers = new ArrayCollection();
         $this->meetups = new ArrayCollection();
     }
     public function __toString()
@@ -95,28 +102,56 @@ class City
     /**
      * @return Collection|User[]
      */
-    public function getUsers(): Collection
+    public function getLocalUsers(): Collection
     {
-        return $this->users;
+        return $this->localUsers;
     }
 
-    public function addUser(User $user): self
+    public function addLocalUser(User $localUser): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setMeetupCity($this);
+        if (!$this->localUsers->contains($localUser)) {
+            $this->localUsers[] = $localUser;
+            $localUser->setMeetupCity($this);
         }
 
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeLocalUser(User $localUser): self
     {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
+        if ($this->localUsers->contains($localUser)) {
+            $this->localUsers->removeElement($localUser);
             // set the owning side to null (unless already changed)
-            if ($user->getMeetupCity() === $this) {
-                $user->setMeetupCity(null);
+            if ($localUser->getMeetupCity() === $this) {
+                $localUser->setMeetupCity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTouristUsers(): Collection
+    {
+        return $this->touristUsers;
+    }
+
+    public function addTouristUser(User $touristUser): self
+    {
+        if (!$this->touristUsers->contains($touristUser)) {
+            $this->touristUsers[] = $touristUser;
+            $touristUser->setMeetupCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTouristUser(User $touristUser): self
+    {
+        if ($this->touristUsers->contains($touristUser)) {
+            $this->touristUsers->removeElement($touristUser);
+            // set the owning side to null (unless already changed)
+            if ($touristUser->getMeetupCity() === $this) {
+                $touristUser->setMeetupCity(null);
             }
         }
 

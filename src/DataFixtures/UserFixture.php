@@ -35,11 +35,11 @@ class UserFixture extends BaseFixture
 
         $this->createMany(1, 'main_users', function ($i) {
             $user = new User();
-            $user->setEmail(sprintf('test3@example.com', $i));
+            $user->setEmail(sprintf('test4@example.com', $i));
             $user->setPassword($this->passwordEncoder->encodePassword($user, 'authenticate'));
             $user->setRoles([])
-                ->setFirstname('John')
-                ->setLastname('Smith')
+                ->setFirstname('Amy')
+                ->setLastname('Kalan')
                 ->setAge(54)
                 ->setAvailStartDate(new \DateTime())
                 ->setAvailEndDate(new \DateTime())

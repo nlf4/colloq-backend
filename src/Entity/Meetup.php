@@ -52,7 +52,7 @@ class Meetup
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=city::class, inversedBy="meetups")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="meetups")
      * @ORM\JoinColumn(nullable=false)
      */
     private $city;
@@ -61,6 +61,12 @@ class Meetup
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="meetups")
      */
     private $users;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="meetups")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $language;
 
     public function __construct()
     {
@@ -180,6 +186,18 @@ class Meetup
             $this->users->removeElement($user);
             $user->removeMeetup($this);
         }
+
+        return $this;
+    }
+
+    public function getLanguage(): ?language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?language $language): self
+    {
+        $this->language = $language;
 
         return $this;
     }

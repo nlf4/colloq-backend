@@ -61,7 +61,7 @@ class Message
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="writtenMessages")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"message:read"})
      */
