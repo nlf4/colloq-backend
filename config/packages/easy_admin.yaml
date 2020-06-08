@@ -61,6 +61,7 @@ easy_admin:
                     - isTutor
                     - meetupType
                     - publicMessage
+                    - {property: 'images.imageFile', type: 'vich_image', label: 'Profile photo'}
 
         Locals:
             class: App\Entity\User
@@ -221,6 +222,17 @@ easy_admin:
                         - caption
                         - createdAt
                         - {property: 'imageFile', type: 'vich_image', label: 'Profile photo'}
+            show:
+                fields:
+                    - id
+                    - {property: 'user.fullname', label: 'User'}
+                    - {property: 'user.email', label: 'User Email'}
+                    - filename
+                    - title
+                    - caption
+                    - createdAt
+                    - { property: 'image', type: 'image', base_path: '%uploads_path%' }
+
 
 
                 edit:
@@ -285,6 +297,7 @@ easy_admin:
             css:
                 # ...
                 - 'css/admin.css'
+
         menu:
             - label: "Users"
               icon: 'user'
@@ -298,5 +311,5 @@ easy_admin:
             - label: 'Events'
               icon: 'comments'
               children: ['Meetup']
-            - { label: 'Api', url: '/api', icon: 'table' }
+            - { label: 'Api', url: 'https://wdev.be/wdev_nicole/eindwerk/api', icon: 'table' }
             - { label: 'Colloq App', url: 'http://localhost:3000', icon: 'asterisk'}

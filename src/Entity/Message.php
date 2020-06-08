@@ -63,14 +63,14 @@ class Message
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="writtenMessages")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"message:read"})
+     * @Groups({"message:read", "message:write"})
      */
     private $messageAuthor;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="receivedMessages")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"message:read"})
+     * @Groups({"message:read", "message:write"})
      */
     private $messageRecipient;
 
