@@ -2,8 +2,12 @@ body {
     background-color: #fff;
 }
 
+.login-container {
+    width: 60%;
+}
+
 .form-signin {
-    width: 100%;
+    width: 60%;
     max-width: 330px;
     padding: 15px;
     margin: auto;
@@ -36,4 +40,16 @@ body {
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+
+button {
+    background-color: #ff7043;
+}
+
+.navbar-brand {
+    font-size: 56px;
+    margin: 0 12rem;
+    padding: 0;
+    line-height: 1;
+
 }

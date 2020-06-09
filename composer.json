@@ -10,6 +10,7 @@
         "doctrine/orm": "^2.7",
         "easycorp/easyadmin-bundle": "^2.3",
         "fzaninotto/faker": "^1.9",
+        "gedmo/doctrine-extensions": "^2.4",
         "lexik/jwt-authentication-bundle": "^2.6",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/console": "4.4.*",

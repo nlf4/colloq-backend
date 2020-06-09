@@ -69,14 +69,14 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user:read", "user:write"})
+     * @Groups({"user:read", "user:write", "message:read"})
      * @Assert\NotBlank()
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user:read", "user:write"})
+     * @Groups({"user:read", "user:write", "message:read"})
      * @Assert\NotBlank()
      */
     private $lastname;
