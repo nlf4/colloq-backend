@@ -11,6 +11,7 @@ class AuthController extends AbstractController
 {
     public function register(Request $request, UserPasswordEncoderInterface $encoder)
     {
+//        if ($request->isMethod('POST'))
         $em = $this->getDoctrine()->getManager();
 
         //get request data

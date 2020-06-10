@@ -7,6 +7,7 @@ easy_admin:
         Tourists:
             class: App\Entity\User
             list:
+                sort: ['id', 'ASC']
                 fields:
                     - id
                     - { property: 'email', type: 'email' }
@@ -66,6 +67,7 @@ easy_admin:
         Locals:
             class: App\Entity\User
             list:
+                sort: ['id', 'ASC']
                 dql_filter: 'entity.isTutor = true'
                 actions:
                     - {name: 'show', icon: 'search-plus', label: false, css_class: 'btn btn-info'}
@@ -136,8 +138,12 @@ easy_admin:
             class: App\Entity\City
             label: 'Cities'
             list:
+                sort: ['id', 'ASC']
                 fields:
-                    ['id', 'name', 'country.name', 'users', 'meetups']
+                    - id
+                    - name
+                    - {property: 'country.name', label: 'Country'}
+                    - meetups
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
@@ -170,6 +176,7 @@ easy_admin:
             class: App\Entity\Country
             label: 'Countries'
             list:
+                sort: ['id', 'ASC']
                 fields:
                   ['id', 'name', 'cities']
                 actions:
@@ -282,6 +289,7 @@ easy_admin:
             label: 'Languages'
 
             list:
+                sort: ['id', 'ASC']
                 fields:
                   ['id', 'name']
                 title: ""
