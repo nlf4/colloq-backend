@@ -11,8 +11,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get"},
- *      itemOperations={"get"},
+ *     collectionOperations={"get", "post"},
+ *      itemOperations={"get", "put", "delete"},
  *     normalizationContext={"groups"={"city:read"}, "swagger_definition_name"="Read"},
  *     denormalizationContext={"groups"={"city:write"}, "swagger_definition_name"="Write"}
  * )
@@ -34,7 +34,7 @@ class City
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="cities")
+     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="cities", cascade={"persist"}))
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"city:read"})
      */
@@ -42,13 +42,13 @@ class City
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="city")
-     * @Groups({"city:read"})
+     * @Groups({"city:read", "city:write", "user:write"})
      */
     private $localUsers;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="meetupCity")
-     * @Groups({"city:read"})
+     * @Groups({"city:read", "city:write", "user:write"})
      */
     private $touristUsers;
 

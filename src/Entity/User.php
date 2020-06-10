@@ -22,7 +22,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     collectionOperations={"get"={
  *      "normalization_context"={"groups"={"user:read", "user:item:get"}},
  *     },
- *     "post"},
+ *     "post"={
+ *      "validation_groups"={"Default", "create"}
+ *     }},
  *     itemOperations={"get", "put", "delete"},
  *     normalizationContext={"groups"={"user:read"}, "swagger_definition_name"="Read"},
  *     denormalizationContext={"groups"={"user:write"}, "swagger_definition_name"="Write"},
@@ -63,7 +65,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"user:write"})
-     * @Assert\NotBlank()
+     *
      */
     private $password;
 
@@ -88,10 +90,10 @@ class User implements UserInterface
     private $age;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      * @Groups({"user:read"})
      */
-    private $roles = array();
+    private $roles = [];
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="localUsers")
@@ -149,7 +151,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
+     * @Groups({"user:write"})
+     * @SerializedName("password")
+     * @Assert\NotBlank(groups={"create"})
      */
     private $plainPassword;
 
@@ -190,6 +194,7 @@ class User implements UserInterface
 
     public function __construct()
     {
+        $this->roles[] = 'ROLE_USER';
         $this->writtenMessages = new ArrayCollection();
         $this->receivedMessages = new ArrayCollection();
         $this->writtenComments = new ArrayCollection();

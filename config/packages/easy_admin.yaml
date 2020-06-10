@@ -32,6 +32,7 @@ easy_admin:
                 fields:
                     - { type: 'section', label: 'User Details' }
                     - email
+                    - {property: 'plainPassword', label: 'Password', type: 'password'}
                     - {property: 'firstName', type: 'text'}
                     - {property: 'lastName', type: 'text'}
                     - age
@@ -93,6 +94,7 @@ easy_admin:
                     - {property: 'firstName', type: 'text'}
                     - {property: 'lastName', type: 'text'}
                     - age
+                    - {property: 'plainPassword', label: 'Password', type: 'password'}
                     - city
                     - { type: 'section', label: 'Meetup Details' }
                     - availStartDate
@@ -123,13 +125,45 @@ easy_admin:
         User:
             class: App\Entity\User
             help: ''
-            label: 'Users'
+            label: 'All Users'
             list:
-                fields: ['id', 'email', 'firstName', 'lastName', 'age', 'city.name', 'availStartDate', 'availEndDate', 'isTourist', 'isTutor', 'meetupType']
+                fields:
+                    - id
+                    - { property: 'email', type: 'email' }
+                    - firstName
+                    - lastName
+                    - age
+                    - {property: 'city.name', label: 'City'}
+                    - availStartDate
+                    - availEndDate
+                    - {property: 'isTourist', label: 'Tourist'}
+                    - {property: 'isTutor', label: 'Local'}
+                    - meetupType
 
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            form:
+                title: 'Add a User'
+                fields:
+                    - { type: 'section', label: 'User Details' }
+                    - email
+                    - {property: 'firstName', type: 'text'}
+                    - {property: 'lastName', type: 'text'}
+                    - age
+                    - city
+                    - { type: 'section', label: 'Meetup Details' }
+                    - availStartDate
+                    - availEndDate
+                    - {property: 'isTourist', label: 'Tourist'}
+                    - {property: 'isTutor', label: 'Local'}
+                    - meetupType
+                    - publicMessage
+                new:
+                    -'-id'
+
+                edit:
+                    title:  'Edit a User'
             show:
             search:
 
@@ -309,7 +343,7 @@ easy_admin:
         menu:
             - label: "Users"
               icon: 'user'
-              children: ['Tourists', 'Locals']
+              children: ['Tourists', 'Locals', 'User']
             - label: "User Profile"
               icon: 'address-card'
               children: ['Comment', 'Message', 'Image', 'Language']

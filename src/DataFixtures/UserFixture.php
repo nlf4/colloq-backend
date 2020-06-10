@@ -33,24 +33,24 @@ class UserFixture extends BaseFixture
 //        $this->addReference('Atlanta', $city);
 //        $manager->persist($city);
 
-        $this->createMany(1, 'main_users', function ($i) {
-            $user = new User();
-            $user->setEmail(sprintf('test4@example.com', $i));
-            $user->setPassword($this->passwordEncoder->encodePassword($user, 'authenticate'));
-            $user->setRoles([])
-                ->setFirstname('Amy')
-                ->setLastname('Kalan')
-                ->setAge(54)
-                ->setAvailStartDate(new \DateTime())
-                ->setAvailEndDate(new \DateTime())
-                ->setIsTourist(true)
-                ->setIsTutor(false)
-                ->setMeetupType('park');
-
-            return $user;
-        });
-
-        $manager->flush();
+//        $this->createMany(1, 'main_users', function ($i) {
+//            $user = new User();
+//            $user->setEmail(sprintf('test4@example.com', $i));
+//            $user->setPassword($this->passwordEncoder->encodePassword($user, 'authenticate'));
+//            $user->setRoles([])
+//                ->setFirstname('Amy')
+//                ->setLastname('Kalan')
+//                ->setAge(54)
+//                ->setAvailStartDate(new \DateTime())
+//                ->setAvailEndDate(new \DateTime())
+//                ->setIsTourist(true)
+//                ->setIsTutor(false)
+//                ->setMeetupType('park');
+//
+//            return $user;
+//        });
+//
+//        $manager->flush();
     }
 
 }
