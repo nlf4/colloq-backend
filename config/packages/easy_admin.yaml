@@ -20,6 +20,7 @@ easy_admin:
                     - {property: 'isTourist', label: 'Tourist'}
                     - {property: 'isTutor', label: 'Local'}
                     - meetupType
+                    - images
 
                 dql_filter: 'entity.isTourist = true'
                 actions:
@@ -32,7 +33,7 @@ easy_admin:
                 fields:
                     - { type: 'section', label: 'User Details' }
                     - email
-                    - {property: 'plainPassword', label: 'Password', type: 'password'}
+#                    - {property: 'plainPassword', label: 'Password', type: 'password'}
                     - {property: 'firstName', type: 'text'}
                     - {property: 'lastName', type: 'text'}
                     - age
@@ -63,7 +64,8 @@ easy_admin:
                     - isTutor
                     - meetupType
                     - publicMessage
-                    - {property: 'images.imageFile', type: 'vich_image', label: 'Profile photo'}
+                    - { property: 'images.image', type: 'image', base_path: '%uploads_path%' }
+                    - {property: 'images.image', type: 'vich_image', label: 'Profile photo'}
 
         Locals:
             class: App\Entity\User
@@ -94,7 +96,7 @@ easy_admin:
                     - {property: 'firstName', type: 'text'}
                     - {property: 'lastName', type: 'text'}
                     - age
-                    - {property: 'plainPassword', label: 'Password', type: 'password'}
+#                    - {property: 'plainPassword', label: 'Password', type: 'password'}
                     - city
                     - { type: 'section', label: 'Meetup Details' }
                     - availStartDate

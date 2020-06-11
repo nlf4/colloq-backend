@@ -43,7 +43,7 @@ class Image
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"image:read", "image:write"})
+     * @Groups({"image:read", "image:write", "user:read", "user:write"})
      */
     private $filename;
 
@@ -77,6 +77,8 @@ class Image
     /**
      * @ORM\Column(type="string", length=255)
      * @var string
+     * @Groups({"image:read", "image:write", "user:read", "user:write"})
+     *
      */
     private $image;
 

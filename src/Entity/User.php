@@ -19,6 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
+ *     accessControl = "is_granted('ROLE_USER')",
  *     collectionOperations={"get"={
  *      "normalization_context"={"groups"={"user:read", "user:item:get"}},
  *     },
@@ -179,6 +180,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="user", orphanRemoval=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $images;
 
