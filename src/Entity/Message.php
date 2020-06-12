@@ -37,6 +37,7 @@ class Message
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"message:read"})
      */
     private $id;
 
