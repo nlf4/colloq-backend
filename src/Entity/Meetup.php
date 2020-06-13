@@ -17,6 +17,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *  "normalization_context"={"groups"={"meetup:read"},"enable_max_depth"=true},
  *  "denormalization_context"={"groups"={"meetup:write"},"enable_max_depth"=true}
  *     })
+ *
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "users": "exact"
+ * })
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "creator": "exact"
+ * })
  * @ORM\Entity(repositoryClass=MeetupRepository::class)
  */
 class Meetup
@@ -84,6 +91,18 @@ class Meetup
      * @Groups({"meetup:read", "meetup:write"})
      */
     private $language;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="createdMeetups")
+     * @Groups({"meetup:read", "meetup:write"})
+     */
+    private $creator;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="participatingMeetups")
+     * @Groups({"meetup:read", "meetup:write"})
+     */
+    private $participant;
 
     public function __construct()
     {
@@ -221,6 +240,30 @@ class Meetup
     public function setLanguage(?language $language): self
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    public function getCreator(): ?user
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?user $creator): self
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    public function getParticipant(): ?user
+    {
+        return $this->participant;
+    }
+
+    public function setParticipant(?user $participant): self
+    {
+        $this->participant = $participant;
 
         return $this;
     }

@@ -35,6 +35,7 @@ class Comment
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"comment:read", "comment:write"})
      */
     private $id;
 
@@ -54,16 +55,21 @@ class Comment
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="writtenComments")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"comment:read"})
+     * @Groups({"comment:read", "comment:write"})
      */
     private $commentAuthor;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="receivedComments")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"comment:read"})
+     * @Groups({"comment:read", "comment:write"})
      */
     private $commentRecipient;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {

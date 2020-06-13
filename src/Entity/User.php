@@ -35,11 +35,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @ApiFilter(BooleanFilter::class, properties={"isTutor", "isTourist"})
  * @ApiFilter(SearchFilter::class, properties={"firstname": "partial"})
+ * @ApiFilter(SearchFilter::class, properties={"email": "exact"})
 // * @ApiFilter(SearchFilter::class, properties={"city": "exact"})
  * @ApiFilter(RangeFilter::class, properties={"age"})
  * @ApiFilter(SearchFilter::class, properties={
  *     "city.name": "exact"
  * })
+ *
  * @UniqueEntity(fields={"email"})
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
@@ -72,14 +74,14 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user:read", "user:write", "message:read"})
+     * @Groups({"user:read", "user:write", "message:read", "comment:read"})
      * @Assert\NotBlank()
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user:read", "user:write", "message:read"})
+     * @Groups({"user:read", "user:write", "message:read", "comment:read"})
      * @Assert\NotBlank()
      */
     private $lastname;
@@ -194,6 +196,16 @@ class User implements UserInterface
      */
     private $userLanguages;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Meetup::class, mappedBy="creator")
+     */
+    private $createdMeetups;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Meetup::class, mappedBy="participant")
+     */
+    private $participatingMeetups;
+
     public function __construct()
     {
         $this->roles[] = 'ROLE_USER';
@@ -204,6 +216,8 @@ class User implements UserInterface
         $this->images = new ArrayCollection();
         $this->meetups = new ArrayCollection();
         $this->userLanguages = new ArrayCollection();
+        $this->createdMeetups = new ArrayCollection();
+        $this->participatingMeetups = new ArrayCollection();
     }
 
     public function __toString()
@@ -629,6 +643,68 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($userLanguage->getUser() === $this) {
                 $userLanguage->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Meetup[]
+     */
+    public function getCreatedMeetups(): Collection
+    {
+        return $this->createdMeetups;
+    }
+
+    public function addCreatedMeetup(Meetup $createdMeetup): self
+    {
+        if (!$this->createdMeetups->contains($createdMeetup)) {
+            $this->createdMeetups[] = $createdMeetup;
+            $createdMeetup->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreatedMeetup(Meetup $createdMeetup): self
+    {
+        if ($this->createdMeetups->contains($createdMeetup)) {
+            $this->createdMeetups->removeElement($createdMeetup);
+            // set the owning side to null (unless already changed)
+            if ($createdMeetup->getCreator() === $this) {
+                $createdMeetup->setCreator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Meetup[]
+     */
+    public function getParticipatingMeetups(): Collection
+    {
+        return $this->participatingMeetups;
+    }
+
+    public function addParticipatingMeetup(Meetup $participatingMeetup): self
+    {
+        if (!$this->participatingMeetups->contains($participatingMeetup)) {
+            $this->participatingMeetups[] = $participatingMeetup;
+            $participatingMeetup->setParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipatingMeetup(Meetup $participatingMeetup): self
+    {
+        if ($this->participatingMeetups->contains($participatingMeetup)) {
+            $this->participatingMeetups->removeElement($participatingMeetup);
+            // set the owning side to null (unless already changed)
+            if ($participatingMeetup->getParticipant() === $this) {
+                $participatingMeetup->setParticipant(null);
             }
         }
 
