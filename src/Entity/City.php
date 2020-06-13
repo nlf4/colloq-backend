@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
@@ -16,6 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     normalizationContext={"groups"={"city:read"}, "swagger_definition_name"="Read"},
  *     denormalizationContext={"groups"={"city:write"}, "swagger_definition_name"="Write"}
  * )
+ * @ApiFilter(SearchFilter::class, properties={"name": "exact"})
  * @ORM\Entity(repositoryClass=CityRepository::class)
  */
 class City
@@ -24,12 +27,13 @@ class City
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"city:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"city:read", "user:item:get", "user:read", "user:write"})
+     * @Groups({"city:read", "user:item:get", "user:read", "user:write", "country:read"})
      */
     private $name;
 

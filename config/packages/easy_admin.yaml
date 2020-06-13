@@ -295,7 +295,17 @@ easy_admin:
             label: 'Meetups'
             list:
                 fields:
-                  ['id', 'name', 'date', 'startTime', 'endTime', 'type', 'description', 'city', 'users']
+                    - id
+                    - name
+                    - date
+                    - startTime
+                    - endTime
+                    - type
+                    - description
+                    - city
+                    - {property: 'language.name', label: 'Language'}
+                    - users
+
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}

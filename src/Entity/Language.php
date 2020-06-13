@@ -7,9 +7,18 @@ use App\Repository\LanguageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={"get", "post"},
+ *      itemOperations={"get", "put", "delete"},
+ *     normalizationContext={"groups"={"language:read"}, "swagger_definition_name"="Read"},
+ *     denormalizationContext={"groups"={"language:write"}, "swagger_definition_name"="Write"}
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"name": "exact"})
  * @ORM\Entity(repositoryClass=LanguageRepository::class)
  */
 class Language
@@ -18,21 +27,25 @@ class Language
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"language:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"language:read"})
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Meetup::class, mappedBy="language")
+     * @Groups({"language:read"})
      */
     private $meetups;
 
     /**
      * @ORM\OneToMany(targetEntity=UserLanguages::class, mappedBy="language")
+     * @Groups({"language:read"})
      */
     private $userLanguages;
 
@@ -40,6 +53,12 @@ class Language
     {
         $this->meetups = new ArrayCollection();
         $this->userLanguages = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+
+        return (string)$this->getName();
     }
 
     public function getId(): ?int

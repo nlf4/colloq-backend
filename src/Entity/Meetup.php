@@ -7,9 +7,16 @@ use App\Repository\MeetupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
- * @ApiResource()
+ * @ApiResource(attributes={
+ *  "force_eager"=false,
+ *  "normalization_context"={"groups"={"meetup:read"},"enable_max_depth"=true},
+ *  "denormalization_context"={"groups"={"meetup:write"},"enable_max_depth"=true}
+ *     })
  * @ORM\Entity(repositoryClass=MeetupRepository::class)
  */
 class Meetup
@@ -18,59 +25,75 @@ class Meetup
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"meetup:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"meetup:read", "meetup:write"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"meetup:read", "meetup:write"})
      */
     private $date;
 
     /**
      * @ORM\Column(type="time")
+     * @Groups({"meetup:read", "meetup:write"})
      */
     private $startTime;
 
     /**
      * @ORM\Column(type="time")
+     * @Groups({"meetup:read", "meetup:write"})
      */
     private $endTime;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"meetup:read", "meetup:write"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"meetup:read", "meetup:write"})
      */
     private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="meetups")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"meetup:read", "meetup:write"})
      */
     private $city;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="meetups")
+     * @Groups({"meetup:read", "meetup:write"})
      */
     private $users;
 
     /**
      * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="meetups")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"meetup:read", "meetup:write"})
      */
     private $language;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+
+        return (string)$this->getName();
     }
 
     public function getId(): ?int
