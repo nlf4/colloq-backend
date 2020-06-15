@@ -6,6 +6,15 @@ body {
     width: 60%;
 }
 
+
+label {
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    cursor: pointer;
+}
+
 .form-signin {
     width: 60%;
     max-width: 330px;
@@ -52,4 +61,12 @@ button {
     padding: 0;
     line-height: 1;
 
+}
+
+.navbar-brand:hover {
+    color: #fff;
+}
+
+span:hover {
+    color: white;
 }

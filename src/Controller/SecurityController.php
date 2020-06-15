@@ -26,21 +26,21 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    /**
-     * @Route("/admin", name="app_admin")
-     */
-    public function admin()
-    {
-        throw new \Exception('should not be reached');
-    }
-
-    /**
-     * @Route("/", name="app_homepage")
-     */
-    public function homepage()
-    {
-        throw new \Exception('should not be reached');
-    }
+//    /**
+//     * @Route("/admin", name="app_admin")
+//     */
+//    public function admin()
+//    {
+//        throw new \Exception('should not be reached');
+//    }
+//
+//    /**
+//     * @Route("/", name="app_homepage")
+//     */
+//    public function homepage()
+//    {
+//        throw new \Exception('should not be reached');
+//    }
 
     /**
      * @Route("/logout", name="app_logout")

@@ -17,7 +17,7 @@ if (!isset($_SERVER['APP_ENV'])) {
     }
 
     //for local development
-    //(new Dotenv())->load(__DIR__.'/../.env.local');
+//    (new Dotenv())->load(__DIR__.'/../.env.local');
 
     //for deployment system 3
     (new Dotenv())->load(__DIR__.'/system/.env.local');
