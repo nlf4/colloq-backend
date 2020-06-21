@@ -13,9 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use ApiPlatform\Core\Annotation\ApiProperty;
 
 /**
  * @ApiResource(
+ *     iri="http://schema.org/Image",
  *     collectionOperations={"get", "post"},
  *     itemOperations={"get"={
  *      "normalization_context"={"groups"={"image:read", "image:item:get"}},
@@ -25,6 +27,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *     denormalizationContext={"groups"={"image:write"}, "swagger_definition_name"="Write"},
  *     attributes={
  *     "pagination_items_per_page"=10
+ *
  *     }
  * )
  * @ApiFilter(SearchFilter::class, properties={"filename": "partial", "title": "partial", "user": "partial"})
@@ -87,6 +90,17 @@ class Image
      * @var File
      */
     private $imageFile;
+
+//    /**
+//     * @var MediaObject|null
+//     *
+//     * @ORM\ManyToOne(targetEntity=MediaObject::class)
+//     * @ORM\JoinColumn(nullable=true)
+//     * @ApiProperty(iri="http://schema.org/vichImage")
+//     */
+//    public $vichImage;
+
+
 
     public function getId(): ?int
     {
@@ -182,4 +196,20 @@ class Image
     {
         return $this->imageFile;
     }
+
+//    /**
+//     * @return MediaObject|null
+//     */
+//    public function getVichImage(): ?MediaObject
+//    {
+//        return $this->vichImage;
+//    }
+//
+//    /**
+//     * @param MediaObject|null $vichImage
+//     */
+//    public function setVichImage(?MediaObject $vichImage): void
+//    {
+//        $this->vichImage = $vichImage;
+//    }
 }

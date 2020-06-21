@@ -21,7 +21,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     itemOperations={"get"={
  *      "normalization_context"={"groups"={"message:read", "message:item:get"}},
  *     },
- *      "put", "delete"},
+ *      "delete"},
  *     normalizationContext={"groups"={"message:read"}, "swagger_definition_name"="Read"},
  *     denormalizationContext={"groups"={"message:write"}, "swagger_definition_name"="Write"},
  *     attributes={

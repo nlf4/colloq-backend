@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use \Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -16,9 +17,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ApiResource(
+ *     iri="http://schema.org/User",
  *     accessControl = "is_granted('ROLE_USER')",
  *     collectionOperations={"get"={
  *      "normalization_context"={"groups"={"user:read", "user:item:get"}},
@@ -26,13 +32,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     "post"={
  *      "validation_groups"={"Default", "create"}
  *     }},
- *     itemOperations={"get", "put", "delete"},
+ *     itemOperations={"get"={
+ *          "normalization_context"={"groups"={"user:read", "user:item:get"}}
+ *     }, "put"},
  *     normalizationContext={"groups"={"user:read"}, "swagger_definition_name"="Read"},
  *     denormalizationContext={"groups"={"user:write"}, "swagger_definition_name"="Write"},
  *     attributes={
  *     "pagination_items_per_page"=10
  *     }
  * )
+ * @ApiFilter(PropertyFilter::class)
  * @ApiFilter(BooleanFilter::class, properties={"isTutor", "isTourist"})
  * @ApiFilter(SearchFilter::class, properties={"firstname": "partial"})
  * @ApiFilter(SearchFilter::class, properties={"email": "exact"})
@@ -99,9 +108,10 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="localUsers")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="localUsers", fetch="EAGER")
      * @ORM\JoinColumn(nullable=true)
      * @Groups({"user:read", "user:write"})
+     *
      */
     private $city;
 
@@ -109,6 +119,7 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="touristUsers")
      * @ORM\JoinColumn(nullable=true)
      * @Groups({"user:read", "user:write"})
+     *
      */
     private $meetupCity;
 
@@ -151,6 +162,17 @@ class User implements UserInterface
      * @Groups({"user:read", "user:write"})
      */
     private $publicMessage;
+
+    /**
+     * @var MediaObject|null
+     *
+     * @ORM\ManyToOne(targetEntity=MediaObject::class)
+     * @ORM\JoinColumn(nullable=true)
+     * @ApiProperty(iri="http://schema.org/image")
+     */
+    public $image;
+
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -331,6 +353,7 @@ class User implements UserInterface
 
     public function getCity(): ?City
     {
+
         return $this->city;
     }
 
@@ -435,6 +458,22 @@ class User implements UserInterface
         $this->plainPassword = $plainPassword;
 
         return $this;
+    }
+
+    /**
+     * @return MediaObject|null
+     */
+    public function getImage(): ?MediaObject
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param MediaObject|null $image
+     */
+    public function setImage(?MediaObject $image): void
+    {
+        $this->image = $image;
     }
 
     /**
