@@ -12,6 +12,11 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={"get", "post"},
+ *      itemOperations={"get", "put", "delete"},
+ * )
+ *
  * @ApiResource(attributes={
  *  "force_eager"=false,
  *  "normalization_context"={"groups"={"meetup:read"},"enable_max_depth"=true},

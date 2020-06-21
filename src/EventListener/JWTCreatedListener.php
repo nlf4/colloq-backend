@@ -61,8 +61,10 @@ class JWTCreatedListener
         $payload['firstName'] = $user->getFirstname();
         $payload['lastName'] = $user->getLastname();
         $payload['age'] = $user->getAge();
-        $payload['city'] = $user->getCity();
-        $payload['meetupCity'] = $user->getMeetupCity();
+        $payload['city'] = $user->getCity()->getName();
+        $payload['cityId'] = $user->getCity()->getId();
+        $payload['meetupCity'] = $user->getMeetupCity()->getName();
+        $payload['meetupCityId'] = $user->getMeetupCity()->getId();
         $payload['availStartDate'] = $user->getAvailStartDate();
         $payload['availEndDate'] = $user->getAvailEndDate();
         $payload['isTourist'] = $user->getIsTourist();
