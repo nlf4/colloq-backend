@@ -25,7 +25,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @ApiResource(
  *     iri="http://schema.org/User",
- *     accessControl = "is_granted('ROLE_USER')",
  *     collectionOperations={"get"={
  *      "normalization_context"={"groups"={"user:read", "user:item:get"}},
  *     },

@@ -14,8 +14,12 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get", "post"},
- *      itemOperations={"get", "put", "delete"},
+ *     collectionOperations={"get"={
+ *     "normalization_context"={"groups"={"city:read", "city:item:get"}},
+ *     }, "post"},
+ *      itemOperations={"get"={
+ *     "normalization_context"={"groups"={"city:read", "city:item:get"}},
+ *     }, "put", "delete"},
  *     normalizationContext={"groups"={"city:read"}, "swagger_definition_name"="Read"},
  *     denormalizationContext={"groups"={"city:write"}, "swagger_definition_name"="Write"}
  * )

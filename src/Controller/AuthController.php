@@ -14,6 +14,8 @@ class AuthController extends AbstractController
 //        if ($request->isMethod('POST'))
         $em = $this->getDoctrine()->getManager();
 
+
+
         //get request data
         $reqdata = json_decode($request->getContent(), false);
         $email = $reqdata->email;
@@ -21,10 +23,14 @@ class AuthController extends AbstractController
         $firstName = $reqdata->firstName;
         $lastName = $reqdata->lastName;
         $age = $reqdata->age;
-//        $city = $reqdata->get('city');
+        $city = $em->getRepository(City::class)->findBy([
+            'id' => $reqdata->city,
+        ]);
 //        $nativeLang = $reqdata->get('nativeLang');
 //        $targetLang = $reqdata->get('targetLang');
-//        $meetupCity = $reqdata->get('meetupCity');
+        $meetupCity = $em->getRepository(City::class)->findBy([
+            'id' => $reqdata->meetupCity,
+        ]);
         $meetupType = $reqdata->meetupType;
 //        $startDate = $reqdata->startDate;
 //        $endDate = $reqdata->endDate;
@@ -49,8 +55,8 @@ class AuthController extends AbstractController
             ->setFirstName($firstName)
             ->setLastName($lastName)
             ->setAge($age)
-//            ->setCity($city)
-//            ->setMeetupCity($meetupCity)
+            ->setCity($city)
+            ->setMeetupCity($meetupCity)
             ->setMeetupType($meetupType)
 //            ->setAvailStartDate($startDate)
 //            ->setAvailEndDate($endDate)
