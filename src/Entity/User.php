@@ -368,7 +368,7 @@ class User implements UserInterface
         return $this->meetupCity;
     }
 
-    public function setMeetupCity(?city $meetupCity): self
+    public function setMeetupCity(?City $meetupCity): self
     {
         $this->meetupCity = $meetupCity;
 

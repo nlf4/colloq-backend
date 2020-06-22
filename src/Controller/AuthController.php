@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\City;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,8 +33,8 @@ class AuthController extends AbstractController
             'id' => $reqdata->meetupCity,
         ]);
         $meetupType = $reqdata->meetupType;
-//        $startDate = $reqdata->startDate;
-//        $endDate = $reqdata->endDate;
+        $startDate = $reqdata->startDate;
+        $endDate = $reqdata->endDate;
         $meetupRole = $reqdata->role;
 
 
@@ -55,11 +56,11 @@ class AuthController extends AbstractController
             ->setFirstName($firstName)
             ->setLastName($lastName)
             ->setAge($age)
-            ->setCity($city)
-            ->setMeetupCity($meetupCity)
+            ->setCity($city[0])
+            ->setMeetupCity($meetupCity[0])
             ->setMeetupType($meetupType)
-//            ->setAvailStartDate($startDate)
-//            ->setAvailEndDate($endDate)
+            ->setAvailStartDate(new \DateTimeImmutable($startDate))
+            ->setAvailEndDate(new \DateTimeImmutable($endDate))
             ->setIsTourist($isTourist)
             ->setIsTutor($isTutor);
 
