@@ -227,6 +227,16 @@ class User implements UserInterface
      */
     private $participatingMeetups;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="nativeSpeakers")
+     */
+    private $nativeLanguage;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="meetupSpeakers")
+     */
+    private $targetLanguage;
+
     public function __construct()
     {
         $this->roles[] = 'ROLE_USER';
@@ -745,6 +755,30 @@ class User implements UserInterface
                 $participatingMeetup->setParticipant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNativeLanguage(): ?Language
+    {
+        return $this->nativeLanguage;
+    }
+
+    public function setNativeLanguage(?Language $nativeLanguage): self
+    {
+        $this->nativeLanguage = $nativeLanguage;
+
+        return $this;
+    }
+
+    public function getTargetLanguage(): ?Language
+    {
+        return $this->targetLanguage;
+    }
+
+    public function setTargetLanguage(?Language $targetLanguage): self
+    {
+        $this->targetLanguage = $targetLanguage;
 
         return $this;
     }

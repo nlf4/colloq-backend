@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\City;
+use App\Entity\Language;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,8 +28,12 @@ class AuthController extends AbstractController
         $city = $em->getRepository(City::class)->findBy([
             'id' => $reqdata->city,
         ]);
-//        $nativeLang = $reqdata->get('nativeLang');
-//        $targetLang = $reqdata->get('targetLang');
+        $nativeLang = $em->getRepository(Language::class)->findBy([
+            'name' => $reqdata->nativeLanguage,
+        ]);
+        $targetLang = $em->getRepository(Language::class)->findBy([
+            'name' => $reqdata->targetLanguage,
+        ]);
         $meetupCity = $em->getRepository(City::class)->findBy([
             'id' => $reqdata->meetupCity,
         ]);
@@ -59,6 +64,8 @@ class AuthController extends AbstractController
             ->setCity($city[0])
             ->setMeetupCity($meetupCity[0])
             ->setMeetupType($meetupType)
+            ->setNativeLanguage($nativeLang[0])
+            ->setTargetLanguage($targetLang[0])
             ->setAvailStartDate(new \DateTimeImmutable($startDate))
             ->setAvailEndDate(new \DateTimeImmutable($endDate))
             ->setIsTourist($isTourist)

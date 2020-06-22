@@ -49,10 +49,22 @@ class Language
      */
     private $userLanguages;
 
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="nativeLanguage")
+     */
+    private $nativeSpeakers;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="targetLanguage")
+     */
+    private $meetupSpeakers;
+
     public function __construct()
     {
         $this->meetups = new ArrayCollection();
         $this->userLanguages = new ArrayCollection();
+        $this->nativeSpeakers = new ArrayCollection();
+        $this->meetupSpeakers = new ArrayCollection();
     }
 
     public function __toString()
@@ -134,6 +146,68 @@ class Language
             // set the owning side to null (unless already changed)
             if ($userLanguage->getLanguage() === $this) {
                 $userLanguage->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getNativeSpeakers(): Collection
+    {
+        return $this->nativeSpeakers;
+    }
+
+    public function addNativeSpeaker(User $nativeSpeaker): self
+    {
+        if (!$this->nativeSpeakers->contains($nativeSpeaker)) {
+            $this->nativeSpeakers[] = $nativeSpeaker;
+            $nativeSpeaker->setNativeLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNativeSpeaker(User $nativeSpeaker): self
+    {
+        if ($this->nativeSpeakers->contains($nativeSpeaker)) {
+            $this->nativeSpeakers->removeElement($nativeSpeaker);
+            // set the owning side to null (unless already changed)
+            if ($nativeSpeaker->getNativeLanguage() === $this) {
+                $nativeSpeaker->setNativeLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getMeetupSpeakers(): Collection
+    {
+        return $this->meetupSpeakers;
+    }
+
+    public function addMeetupSpeaker(User $meetupSpeaker): self
+    {
+        if (!$this->meetupSpeakers->contains($meetupSpeaker)) {
+            $this->meetupSpeakers[] = $meetupSpeaker;
+            $meetupSpeaker->setTargetLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeetupSpeaker(User $meetupSpeaker): self
+    {
+        if ($this->meetupSpeakers->contains($meetupSpeaker)) {
+            $this->meetupSpeakers->removeElement($meetupSpeaker);
+            // set the owning side to null (unless already changed)
+            if ($meetupSpeaker->getTargetLanguage() === $this) {
+                $meetupSpeaker->setTargetLanguage(null);
             }
         }
 

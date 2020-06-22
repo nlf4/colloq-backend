@@ -18,10 +18,12 @@ easy_admin:
                     - {property: 'meetupCity.name', label: 'Meetup City'}
                     - availStartDate
                     - availEndDate
+                    - {property: 'nativeLanguage', label: 'Nat. Lang.'}
+                    - {property: 'targetLanguage', label: 'Target Lang.'}
                     - {property: 'isTourist', label: 'Tourist'}
                     - {property: 'isTutor', label: 'Local'}
                     - meetupType
-                    - images
+
 
                 dql_filter: 'entity.isTourist = true'
                 actions:
