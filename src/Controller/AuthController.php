@@ -26,7 +26,7 @@ class AuthController extends AbstractController
         $lastName = $reqdata->lastName;
         $age = $reqdata->age;
         $city = $em->getRepository(City::class)->findBy([
-            'id' => $reqdata->city,
+            'name' => $reqdata->city,
         ]);
         $nativeLang = $em->getRepository(Language::class)->findBy([
             'name' => $reqdata->nativeLanguage,
@@ -35,7 +35,7 @@ class AuthController extends AbstractController
             'name' => $reqdata->targetLanguage,
         ]);
         $meetupCity = $em->getRepository(City::class)->findBy([
-            'id' => $reqdata->meetupCity,
+            'name' => $reqdata->meetupCity,
         ]);
         $meetupType = $reqdata->meetupType;
         $startDate = $reqdata->startDate;

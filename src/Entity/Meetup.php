@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ApiResource(
@@ -18,7 +19,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * )
  *
  * @ApiResource(attributes={
- *  "force_eager"=false,
+ *  "force_eager"=true,
  *  "normalization_context"={"groups"={"meetup:read"},"enable_max_depth"=true},
  *  "denormalization_context"={"groups"={"meetup:write"},"enable_max_depth"=true}
  *     })
@@ -81,6 +82,7 @@ class Meetup
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="meetups")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"meetup:read", "meetup:write"})
+     * @MaxDepth(1)
      */
     private $city;
 
@@ -94,18 +96,21 @@ class Meetup
      * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="meetups")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"meetup:read", "meetup:write"})
+     * @MaxDepth(1)
      */
     private $language;
 
     /**
      * @ORM\ManyToOne(targetEntity=user::class, inversedBy="createdMeetups")
      * @Groups({"meetup:read", "meetup:write"})
+     * @MaxDepth(1)
      */
     private $creator;
 
     /**
      * @ORM\ManyToOne(targetEntity=user::class, inversedBy="participatingMeetups")
      * @Groups({"meetup:read", "meetup:write"})
+     * @MaxDepth(1)
      */
     private $participant;
 
