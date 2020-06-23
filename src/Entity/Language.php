@@ -27,13 +27,13 @@ class Language
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"language:read"})
+     * @Groups({"language:read", "user:item:get", "user:read", "user:write"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"language:read"})
+     * @Groups({"language:read", "user:item:get", "user:read", "user:write"})
      */
     private $name;
 

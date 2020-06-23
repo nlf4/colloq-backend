@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ApiResource(
@@ -40,6 +41,7 @@ class City
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"city:read", "city:write", "user:item:get", "user:read", "user:write", "country:read"})
+     *
      */
     private $name;
 

@@ -41,8 +41,10 @@ easy_admin:
                     - {property: 'lastName', type: 'text'}
                     - age
                     - city
+                    - {property: 'nativeLanguage', label: 'Native Language'}
                     - { type: 'section', label: 'Meetup Details' }
                     - {property: 'meetupCity', label: 'Meetup City'}
+                    - {property: 'targetLanguage', label: 'Target Language'}
                     - {property: 'availStartDate', label: 'Available Start Date'}
                     - {property: 'availEndDate', label: 'Available End Date'}
                     - isTourist

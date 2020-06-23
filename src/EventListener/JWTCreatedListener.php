@@ -69,6 +69,8 @@ class JWTCreatedListener
         $payload['availEndDate'] = $user->getAvailEndDate();
         $payload['isTourist'] = $user->getIsTourist();
         $payload['isTutor'] = $user->getIsTutor();
+        $payload['nativeLanguage'] = $user->getNativeLanguage()->getName();
+        $payload['targetLanguage'] = $user->getTargetLanguage()->getName();
         $payload['meetupType'] = $user->getMeetupType();
         $payload['publicMessage'] = $user->getPublicMessage();
         $payload['images'] = $user->getImages();

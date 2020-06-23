@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
  * )
  *
  * @ApiResource(attributes={
- *  "force_eager"=true,
+ *  "force_eager"=false,
  *  "normalization_context"={"groups"={"meetup:read"},"enable_max_depth"=true},
  *  "denormalization_context"={"groups"={"meetup:write"},"enable_max_depth"=true}
  *     })
@@ -88,7 +88,7 @@ class Meetup
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="meetups")
-     * @Groups({"meetup:read", "meetup:write"})
+     *
      */
     private $users;
 

@@ -228,12 +228,14 @@ class User implements UserInterface
     private $participatingMeetups;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="nativeSpeakers")
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="nativeSpeakers", fetch="EAGER")
+     * @Groups({"user:read", "user:write"})
      */
     private $nativeLanguage;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="meetupSpeakers")
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="meetupSpeakers", fetch="EAGER")
+     * @Groups({"user:read", "user:write"})
      */
     private $targetLanguage;
 
