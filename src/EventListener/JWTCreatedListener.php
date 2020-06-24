@@ -74,6 +74,11 @@ class JWTCreatedListener
         $payload['meetupType'] = $user->getMeetupType();
         $payload['publicMessage'] = $user->getPublicMessage();
         $payload['images'] = $user->getImages();
+        if ($user->getImage()) {
+            $payload['image'] = $user->getImage()->getFilePath();
+        }
+
+
 
 
         $event->setData($payload);

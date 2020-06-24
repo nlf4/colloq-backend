@@ -23,6 +23,7 @@ easy_admin:
                     - {property: 'isTourist', label: 'Tourist'}
                     - {property: 'isTutor', label: 'Local'}
                     - meetupType
+                    - { property: 'image.filePath', type: 'image', base_path: '%uploads_path%', label: 'Image' }
 
 
                 dql_filter: 'entity.isTourist = true'
@@ -70,8 +71,8 @@ easy_admin:
                     - isTutor
                     - meetupType
                     - publicMessage
-                    - { property: 'images.image', type: 'image', base_path: '%uploads_path%' }
-                    - {property: 'images.image', type: 'vich_image', label: 'Profile photo'}
+                    - { property: 'image.filePath', type: 'image', base_path: '%uploads_path%', label: 'Image' }
+
 
         Locals:
             class: App\Entity\User
@@ -89,11 +90,15 @@ easy_admin:
                     - lastName
                     - age
                     - {property: 'city.name', label: 'City'}
+                    - {property: 'meetupCity.name', label: 'Meetup City'}
                     - availStartDate
                     - availEndDate
+                    - {property: 'nativeLanguage', label: 'Nat. Lang.'}
+                    - {property: 'targetLanguage', label: 'Target Lang.'}
                     - {property: 'isTourist', label: 'Tourist'}
                     - {property: 'isTutor', label: 'Local'}
                     - meetupType
+                    - { property: 'image.filePath', type: 'image', base_path: '%uploads_path%', label: 'Image' }
             form:
                 title: 'Add a Local'
                 fields:
@@ -102,13 +107,15 @@ easy_admin:
                     - {property: 'firstName', type: 'text'}
                     - {property: 'lastName', type: 'text'}
                     - age
-#                    - {property: 'plainPassword', label: 'Password', type: 'password'}
                     - city
+                    - {property: 'nativeLanguage', label: 'Native Language'}
                     - { type: 'section', label: 'Meetup Details' }
-                    - availStartDate
-                    - availEndDate
-                    - {property: 'isTourist', label: 'Tourist'}
-                    - {property: 'isTutor', label: 'Local'}
+                    - {property: 'meetupCity', label: 'Meetup City'}
+                    - {property: 'targetLanguage', label: 'Target Language'}
+                    - {property: 'availStartDate', label: 'Available Start Date'}
+                    - {property: 'availEndDate', label: 'Available End Date'}
+                    - isTourist
+                    - isTutor
                     - meetupType
                     - publicMessage
                 new:
@@ -130,6 +137,7 @@ easy_admin:
                     - {property: 'isTutor', label: 'Local'}
                     - meetupType
                     - publicMessage
+                    - { property: 'image.filePath', type: 'image', base_path: '%uploads_path%', label: 'Image' }
         User:
             class: App\Entity\User
             help: ''
@@ -297,6 +305,54 @@ easy_admin:
                         - createdAt
                         - {property: 'imageFile', type: 'vich_image', label: 'Profile photo'}
 
+        MediaObjects:
+
+            class: App\Entity\MediaObject
+            label: 'MediaObjects'
+            list:
+                fields:
+                    - id
+                    - contentUrl
+                    - {property: 'file', type: 'vich_image', label: 'File'}
+                    - { property: 'filePath', type: 'image', base_path: '%uploads_path%' }
+
+
+                actions:
+                    - {name: 'show', icon: 'search-plus', label: false, css_class: 'btn btn-info'}
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-success'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            form:
+                title: 'Add/Edit MediaObject'
+                form:
+                    fields:
+                        - id
+                        - contentUrl
+                        - file
+                        - filePath
+
+                new:
+                    fields:
+                        - id
+                        - contentUrl
+                        - file
+                        - filePath
+            show:
+                title: 'MediaObject Details'
+                fields:
+                    - id
+                    - contentUrl
+                    - file
+                    - filePath
+
+
+
+                edit:
+                    title:  'Edit a MediaObject'
+                    fields:
+                        - id
+                        - contentUrl
+                        - file
+                        - filePath
 
         Meetup:
             disabled_actions: ['new']
@@ -368,7 +424,7 @@ easy_admin:
               children: ['Tourists', 'Locals', 'User']
             - label: "User Profile"
               icon: 'address-card'
-              children: ['Comment', 'Message', 'Image', 'Language']
+              children: ['Comment', 'Message', 'Image', 'MediaObjects', 'Language']
             - label: 'Location'
               icon: 'globe-americas'
               children: ['City', 'Country']
