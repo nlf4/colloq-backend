@@ -35,13 +35,15 @@
                 </div>
             #}
 
-            <button class="btn btn-lg btn-warning" type="submit">
+            <button class="btn btn-md btn-warning" type="submit">
                 Login
             </button>
         </form>
         {% if app.user %}
             <div class="mb-3 logout-par">
                 You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                <br />
+                Back to <a href="{{ path('/') }}">dashboard</a>
             </div>
         {% endif %}
     </div>
