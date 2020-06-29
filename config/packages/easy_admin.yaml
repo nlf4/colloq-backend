@@ -18,8 +18,8 @@ easy_admin:
                     - {property: 'meetupCity.name', label: 'Meetup City'}
                     - availStartDate
                     - availEndDate
-                    - {property: 'nativeLanguage', label: 'Nat. Lang.'}
-                    - {property: 'targetLanguage', label: 'Target Lang.'}
+                    - {property: 'nativeLanguage.name', label: 'Nat. Lang.'}
+                    - {property: 'targetLanguage.name', label: 'Target Lang.'}
                     - {property: 'isTourist', label: 'Tourist'}
                     - {property: 'isTutor', label: 'Local'}
                     - meetupType
@@ -59,19 +59,25 @@ easy_admin:
                     title:  'Edit a Tourist'
             show:
                 fields:
+#                    - { type: 'section', label: 'User Details' }
                     - id
                     - { property: 'email', type: 'email' }
-                    - firstName
+                    - { property: 'firstName', type: 'text' }
                     - lastName
                     - age
                     - {property: 'city.name', label: 'City'}
+                    - {property: 'nativeLanguage.name', label: 'Native Language'}
+                    - publicMessage
+                    - { property: 'image.filePath', type: 'image', base_path: '%uploads_path%', label: 'Image' }
+#                    - { type: 'section', label: 'Meetup Details' }
+                    - {property: 'meetupCity.name', label: 'Meetup City'}
+                    - {property: 'targetLanguage.name', label: 'Meetup Language'}
                     - {property: 'availStartDate', label: 'Available Start Date'}
                     - {property: 'availEndDate', label: 'Available End Date'}
                     - isTourist
                     - isTutor
                     - meetupType
-                    - publicMessage
-                    - { property: 'image.filePath', type: 'image', base_path: '%uploads_path%', label: 'Image' }
+
 
 
         Locals:
@@ -125,19 +131,25 @@ easy_admin:
                     title:  'Edit a Local'
             show:
                 fields:
+#                    - { type: 'section', label: 'User Details' }
                     - id
                     - { property: 'email', type: 'email' }
                     - firstName
                     - lastName
                     - age
                     - {property: 'city.name', label: 'City'}
+                    - publicMessage
+                    - { property: 'image.filePath', type: 'image', base_path: '%uploads_path%', label: 'Image' }
+                    - {property: 'nativeLanguage', label: 'Native Language'}
+#                    - { type: 'section', label: 'Meetup Details' }
+                    - {property: 'meetupCity.name', label: 'Meetup City'}
+                    - {property: 'targetLanguage', label: 'Meetup Language'}
                     - {property: 'availStartDate', label: 'Available Start Date'}
                     - {property: 'availEndDate', label: 'Available End Date'}
                     - {property: 'isTourist', label: 'Tourist'}
                     - {property: 'isTutor', label: 'Local'}
                     - meetupType
-                    - publicMessage
-                    - { property: 'image.filePath', type: 'image', base_path: '%uploads_path%', label: 'Image' }
+
         User:
             class: App\Entity\User
             help: ''
@@ -150,11 +162,15 @@ easy_admin:
                     - lastName
                     - age
                     - {property: 'city.name', label: 'City'}
+                    - {property: 'meetupCity.name', label: 'Meetup City'}
                     - availStartDate
                     - availEndDate
+                    - {property: 'nativeLanguage', label: 'Nat. Lang.'}
+                    - {property: 'targetLanguage', label: 'Target Lang.'}
                     - {property: 'isTourist', label: 'Tourist'}
                     - {property: 'isTutor', label: 'Local'}
                     - meetupType
+                    - { property: 'image.filePath', type: 'image', base_path: '%uploads_path%', label: 'Image' }
 
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
@@ -312,8 +328,6 @@ easy_admin:
             list:
                 fields:
                     - id
-                    - contentUrl
-                    - {property: 'file', type: 'vich_image', label: 'File'}
                     - { property: 'filePath', type: 'image', base_path: '%uploads_path%' }
 
 
@@ -424,7 +438,7 @@ easy_admin:
               children: ['Tourists', 'Locals', 'User']
             - label: "User Profile"
               icon: 'address-card'
-              children: ['Comment', 'Message', 'Image', 'MediaObjects', 'Language']
+              children: ['Comment', 'Message', 'MediaObjects', 'Language']
             - label: 'Location'
               icon: 'globe-americas'
               children: ['City', 'Country']

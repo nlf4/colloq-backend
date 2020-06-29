@@ -44,10 +44,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ApiFilter(BooleanFilter::class, properties={"isTutor", "isTourist"})
  * @ApiFilter(SearchFilter::class, properties={"firstname": "partial"})
  * @ApiFilter(SearchFilter::class, properties={"email": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"meetupCity.name": "exact"})
 // * @ApiFilter(SearchFilter::class, properties={"city": "exact"})
  * @ApiFilter(RangeFilter::class, properties={"age"})
  * @ApiFilter(SearchFilter::class, properties={
- *     "city.name": "exact"
+ *     "meetupCity.name": "exact"
  * })
  *
  * @UniqueEntity(fields={"email"})
@@ -115,7 +116,7 @@ class User implements UserInterface
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="touristUsers")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="touristUsers", fetch="EAGER")
      * @ORM\JoinColumn(nullable=true)
      * @Groups({"user:read", "user:write"})
      *
