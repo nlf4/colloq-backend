@@ -24,6 +24,9 @@ Back
     Symfony 4
     MySQL
     Twig
-    Bootstrap
+    Bootstrap 
+    JSON Web Tokens
+
+
 
 
