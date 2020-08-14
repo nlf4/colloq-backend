@@ -62,6 +62,7 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      * @Groups({"user:read", "message:read"})
      */
+
     private $id;
 
     /**
